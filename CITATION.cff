@@ -2,16 +2,16 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Master_Project
+title: Master Thesis - Codes in Development
 message: >-
   If you use this dataset, please cite it using the
   metadata from this file.
 type: dataset
-url: {https://github.com/gterthal/Project-MD/edit/main/CITATION.cff}
+url: "https://github.com/gterthal/Project-MD"
 authors:
   - given-names: Gabriel
     family-names: Erthal
     email: gabriel.t.erthal@gmail.com
     affiliation: Military Institute of Engineering
     orcid: 'https://orcid.org/0000-0002-3933-6447'
-
+ year: 2023
