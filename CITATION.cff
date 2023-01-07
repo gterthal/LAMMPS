@@ -7,6 +7,7 @@ message: >-
   If you use this dataset, please cite it using the
   metadata from this file.
 type: dataset
+url: {https://github.com/gterthal/Project-MD/edit/main/CITATION.cff}
 authors:
   - given-names: Gabriel
     family-names: Erthal
