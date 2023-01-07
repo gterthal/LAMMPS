@@ -1,0 +1,49 @@
+#=========================================================
+#  Inicializacao, Unidades e Parametros Inicias
+#=========================================================
+units			    real
+atom_style	  full
+variable		  T equal 600    			# [K]
+variable		  P equal 48.43106		# [atm]
+variable		  sigma equal 3.695		# [A] sigma_C*sigma_H = sigma^2 
+variable		  rc equal 14			# [A]
+
+#=========================================================
+#  Definicao do Campo de Forca 
+#=========================================================
+
+pair_style		    lj/cut/coul/long  ${rc}				#E_nao ligados
+pair_modify		    mix arithmetic tail yes 
+bond_style		    zero						# harmonic para OPLS
+angle_style		    zero						# harmonic para OPLS
+dihedral_style		zero nocoeff					# zero para OPLS
+kspace_style    	ewald 1.0e-4
+kspace_modify 		gewald	1.0e-4					
+
+#=========================================================
+#  Leitura da configuracao inicial e distribuicao de velocidades
+#=========================================================
+read_data		benzene_trappe.lmp_data
+velocity		all create $T 261086 rot yes dist gaussian
+
+timestep		1.0						# [fs]
+
+#=========================================================
+#  Equilibracao e termalizacao
+#=========================================================  
+fix			NVE all rigid/nve molecule				
+run				1000				
+unfix			NVE
+fix				NPT all rigid/npt molecule temp $T $T 100.0 iso $P $P 1000	
+run				1000000
+
+#=========================================================
+#  Simulacao
+#========================================================= 
+reset_timestep  	0 
+variable        	dens equal density*1000	# [kg/A^3]
+
+thermo_style		tep temp press v_dens vol pe ke etotal enthalpy evdwl etail elong ebond emol
+thermo			1000
+#dump			dump all custom 1000 benzene.dump id x y z vx vy vz 
+run			1000000
