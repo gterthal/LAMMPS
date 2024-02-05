@@ -1,0 +1,57 @@
+define		            density as 0.8765 # g/cm³
+define 	            	N as 800
+define charge_C       as	-0.102    # q
+define charge_H       as	0.102
+
+atom_type	C           0.07	3.55	  # epsiolon and sigma 
+atom_type	H           0.03	2.42	  # 
+mass		              C  12.011	  	# mass
+mass		              H  1.00784		# mass
+
+bond_type	C  C		  469.0 1.4	      # [kcal/mol/A^2][Angstrom]
+bond_type	C  H		  367.0 1.08      # [kcal/mol/A^2][Angstrom]
+angle_type 	C C C 	63.0 120	      # Degrees; Energy K = 0
+angle_type 	C C H 	35.0 120	      # Degrees; Energy K = 0
+dihedral_type 	C C C C 	0
+dihedral_type 	C C C H 	180  
+
+atom	    	C1 C $charge_C
+atom	    	C2 C $charge_C
+atom		C3 C $charge_C
+atom		C4 C $charge_C
+atom		C5 C $charge_C
+atom		C6 C $charge_C
+atom	    	H1 H $charge_H
+atom	    	H2 H $charge_H
+atom		H3 H $charge_H
+atom		H4 H $charge_H
+atom		H5 H $charge_H
+atom		H6 H $charge_H
+
+bond        	C1 C2 C6 H1
+bond		C2 C3 H2
+bond		C3 C4 H3
+bond		C4 C5 H4
+bond		C5 C6 H5
+bond		C6 H6
+
+build
+12
+#
+  C1        0.00000        1.40272        0.00000
+  H1        0.00000        2.49029        0.00000
+  C2       -1.21479        0.70136        0.00000
+  H2       -2.15666        1.24515        0.00000
+  C3       -1.21479       -0.70136        0.00000
+  H3       -2.15666       -1.24515        0.00000
+  C4        0.00000       -1.40272        0.00000
+  H4        0.00000       -2.49029        0.00000
+  C5        1.21479       -0.70136        0.00000
+  H5        2.15666       -1.24515        0.00000
+  C6        1.21479        0.70136        0.00000
+  H6        2.15666        1.24515        0.00000
+
+box         	density {0.602214*$density} # Da/A³
+packmol     	seed 1234 retry 0.95 copy mol(C1) $N action execute
+write       	lammps benzene_opls_aa.lmp_data
+write   		lammpstrj benzene_vmd_opls_aa.lmp_data
