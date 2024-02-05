@@ -1,0 +1,36 @@
+units			    real
+atom_style		    full
+variable		T equal 270.0     #[K]
+variable	    	P equal 1      			# [atm]
+variable		    sigma equal 2.931		    # [Ã…] sigma_C*sigma_H = sigmaˆ2 
+variable		    rc equal 5*${sigma}	        # [Ã…]
+
+pair_style		    lj/cut/coul/long  ${rc}		# OPLS E_nonbounded
+pair_modify		    mix arithmetic tail yes  # TraPPE arithmetic
+bond_style		    zero				    # TraPPE E_bond
+angle_style		    zero				    # TraPPE E_angle
+dihedral_style		zero nocoeff
+kspace_style    	pppm 1.0e-4
+
+read_data		    benzene_trappe_eh.lmp_data
+velocity		    all create $T 261086 rot yes dist gaussian
+
+timestep		    1.0						# [fs]
+  
+#minimize energy  
+fix			        NVE all rigid/nve molecule				
+#fix				NVE all nve 
+run				    5000				
+unfix			    NVE
+
+#equilibração térmica
+fix				    NPT all rigid/npt/small molecule temp $T $T 100.0 iso $P $P 1000	
+run				    1000000
+
+reset_timestep      0 
+variable            dens equal density*1000	# [kg/mÂ³]
+
+thermo_style	    custom step temp press v_dens vol pe ke etotal evdwl ecoul epair ebond eangle edihed eimp emol elong etail
+thermo			    5000
+#dump			    dump all custom 1000 benzene.dump id x y z vx vy vz 
+run				    5000000
